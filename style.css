@@ -1,0 +1,433 @@
+/* ---------- Токены ---------- */
+:root {
+  --paper: #edf0ea;
+  --tile: #ffffff;
+  --track: #dfe4dc;
+  --line: #dde2da;
+  --line-strong: #b9c1b7;
+  --ink: #151a18;
+  --muted: #5e6861;
+  --danger: #b42318;
+
+  --pine: #133a31;
+  --pine-ink: #eaf3ee;
+  --pine-muted: rgba(234, 243, 238, 0.62);
+  --mint: #7ed4b0;
+
+  --action: #133a31;
+  --action-ink: #ffffff;
+  --shadow: rgba(19, 58, 49, 0.16);
+
+  --font: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --measure: 36rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0e1311;
+    --tile: #171d1a;
+    --track: #1c2320;
+    --line: #242d29;
+    --line-strong: #3a4540;
+    --ink: #eceff0;
+    --muted: #98a39c;
+    --danger: #f97066;
+
+    --pine: #0c2b24;
+
+    --action: #7ed4b0;
+    --action-ink: #0a1511;
+    --shadow: rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* ---------- База ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 2px solid var(--action);
+  outline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+/* ---------- Шапка ---------- */
+.hero {
+  padding: clamp(2rem, 7vh, 3.5rem) 0 4.25rem;
+  color: var(--pine-ink);
+  background: var(--pine);
+}
+
+.date {
+  margin: 0;
+  font-size: clamp(2.5rem, 11vw, 4rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.weekday {
+  display: block;
+  color: var(--pine-muted);
+  font-weight: 400;
+}
+
+.summary {
+  margin: 1rem 0 0;
+  color: var(--pine-muted);
+  font-size: 0.9375rem;
+}
+
+/* Одна секция на каждую задачу: выполненные закрашены */
+.progress {
+  display: flex;
+  gap: 3px;
+  height: 8px;
+  margin-top: 0.875rem;
+}
+
+.progress:empty::before {
+  content: "";
+  flex: 1;
+  background: rgba(234, 243, 238, 0.14);
+  border-radius: 4px;
+}
+
+.progress span {
+  flex: 1;
+  min-width: 0;
+  background: rgba(234, 243, 238, 0.16);
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.progress span.on { background: var(--mint); }
+
+/* ---------- Добавление ---------- */
+.main { padding-bottom: 6rem; }
+
+.add {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: -2rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.375rem;
+  background: var(--tile);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 10px 28px var(--shadow);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.add:focus-within {
+  border-color: var(--action);
+  box-shadow: 0 10px 28px var(--shadow), 0 0 0 3px color-mix(in srgb, var(--action) 22%, transparent);
+}
+
+.add-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0;
+  font-size: 1.0625rem;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+
+.add-input::placeholder { color: var(--muted); }
+
+.add-button {
+  padding: 0.6875rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--action-ink);
+  background: var(--action);
+  border: 0;
+  border-radius: 999px;
+  transition: opacity 0.15s;
+}
+
+.add-button:hover { opacity: 0.88; }
+
+/* ---------- Фильтры ---------- */
+.filters {
+  display: flex;
+  gap: 2px;
+  margin-top: 1.5rem;
+  padding: 4px;
+  background: var(--track);
+  border-radius: 12px;
+}
+
+.filters button {
+  flex: 1;
+  padding: 0.4375rem 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.filters button:hover { color: var(--ink); }
+
+.filters button[aria-pressed="true"] {
+  color: var(--ink);
+  font-weight: 600;
+  background: var(--tile);
+  border-color: var(--line);
+}
+
+.count {
+  color: var(--muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Список ---------- */
+.tasks {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task {
+  display: flex;
+  align-items: flex-start;
+  background: var(--tile);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.task:hover { border-color: var(--line-strong); }
+
+.task.is-done {
+  background: transparent;
+  border-color: transparent;
+}
+
+.task.is-new { animation: task-in 0.22s ease-out; }
+
+@keyframes task-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.item {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: 0.875rem;
+  min-width: 0;
+  padding: 0.875rem 0 0.875rem 1rem;
+  cursor: pointer;
+}
+
+.item-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  opacity: 0;
+}
+
+.box {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.0625rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.box svg { width: 14px; height: 14px; }
+
+.box path {
+  fill: none;
+  stroke: var(--action-ink);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 18;
+  stroke-dashoffset: 18;
+  transition: stroke-dashoffset 0.25s ease 0.06s;
+}
+
+.item:hover .box { border-color: var(--muted); }
+
+.item-input:checked + .box {
+  background: var(--action);
+  border-color: var(--action);
+}
+
+.item-input:checked + .box path { stroke-dashoffset: 0; }
+
+.item-input:focus-visible + .box {
+  outline: 2px solid var(--action);
+  outline-offset: 3px;
+}
+
+.text {
+  min-width: 0;
+  font-size: 1.0625rem;
+  overflow-wrap: anywhere;
+  transition: color 0.25s;
+}
+
+/* Линия зачёркивания «проводится» слева направо */
+.text-line {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 58%;
+  background-size: 0 1.5px;
+  transition: background-size 0.3s ease;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.item-input:checked ~ .text { color: var(--muted); }
+.item-input:checked ~ .text .text-line { background-size: 100% 1.5px; }
+
+.remove {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin: 0.6875rem 0.5rem 0 0.25rem;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s, opacity 0.15s;
+}
+
+.remove svg { width: 16px; height: 16px; }
+.remove path { fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }
+.remove:hover {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+}
+
+@media (hover: hover) {
+  .remove { opacity: 0; }
+  .task:hover .remove,
+  .task:focus-within .remove { opacity: 1; }
+}
+
+/* ---------- Пустое состояние и подвал ---------- */
+.empty {
+  margin: 2.5rem 0 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.link {
+  padding: 0.25rem 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:hover { color: var(--danger); }
+
+/* ---------- Уведомление об удалении ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.75rem 1.125rem;
+  font-size: 0.9375rem;
+  color: var(--paper);
+  background: var(--ink);
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+
+.toast.in { animation: toast-in 0.2s ease-out; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.toast button {
+  padding: 0;
+  font-weight: 600;
+  color: inherit;
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.toast :focus-visible { outline-color: var(--paper); }
+
+/* ---------- Узкие экраны ---------- */
+@media (max-width: 420px) {
+  .add { padding-left: 1.125rem; }
+  .add-button { padding: 0.6875rem 1rem; }
+}
+
+/* ---------- Уменьшенная анимация ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Задачи</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1 class="date">
+        <span id="date-day">Сегодня</span>
+        <span class="weekday" id="date-weekday"></span>
+      </h1>
+      <p class="summary" id="summary" aria-live="polite">Список пуст</p>
+      <div class="progress" id="progress" role="progressbar" aria-label="Выполнено задач" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    </div>
+  </header>
+
+  <main class="wrap main">
+    <form class="add" id="add-form" autocomplete="off">
+      <label class="visually-hidden" for="task-input">Новая задача</label>
+      <input class="add-input" id="task-input" type="text" maxlength="200" placeholder="Что нужно сделать?">
+      <button class="add-button" type="submit">Добавить</button>
+    </form>
+
+    <nav class="filters" id="filters" aria-label="Фильтр задач">
+      <button type="button" data-filter="all" aria-pressed="true">Все <span class="count" data-count="all">0</span></button>
+      <button type="button" data-filter="active" aria-pressed="false">Активные <span class="count" data-count="active">0</span></button>
+      <button type="button" data-filter="done" aria-pressed="false">Готово <span class="count" data-count="done">0</span></button>
+    </nav>
+
+    <ul class="tasks" id="task-list"></ul>
+    <p class="empty" id="empty" hidden></p>
+
+    <div class="foot">
+      <button class="link" type="button" id="clear-done" hidden>Очистить выполненные</button>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" hidden>
+    <span id="toast-text"></span>
+    <button type="button" id="toast-undo">Отменить</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
